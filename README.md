@@ -1,3 +1,3 @@
 # BetterBlackjack
 
-Hello, I am testing this 123456789
+SE101 project repository

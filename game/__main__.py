@@ -26,26 +26,26 @@ while play_again:
     player1.changeHand(player_hand[1][0])
 
 
-    if (player1.hand == 21 and player1.hand > newDeck.dealer_hand) # player blackjack
+    if (player1.hand == 21 and player1.hand > newDeck.dealer_hand): # player blackjack
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("\n")
         print("Blackjack!")
         player1.addBalance(bet * 1.5)
         print("Your balance is now at " + str(player1.balance))
-    elif: (player1.hand == 21 and player1.hand == newDeck.dealer_hand) # Push with 2 blackjacks
+    elif (player1.hand == 21 and player1.hand == newDeck.dealer_hand): # Push with 2 blackjacks
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1])
         print("\n")
         print("Push!")
         print("Your balance is still at " + str(player1.balance))
-    elif: (newDeck.dealer_hand == 21 and player1.hand < newDeck.dealer_hand) # dealer blackjack
+    elif (newDeck.dealer_hand == 21 and player1.hand < newDeck.dealer_hand): # dealer blackjack
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1])
         print("\n")
         print("Dealer Blackjack!")
         player1.loseBalance(bet)
         print("Your balance is now at " + str(player1.balance))
-    else:
+    else: # "regular" game
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and an unknown card in his hand!")
         print("You are currently at " + str(player1.hand))

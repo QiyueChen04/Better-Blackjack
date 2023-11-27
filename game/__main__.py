@@ -6,11 +6,11 @@ from deck import Deck
 
 newDeck = Deck()
 newDeck.shuffle()
+player1 = Player(1000, 0)
 
 play_again = 1
 
 while play_again:
-    player1 = Player(100, 0)
 
     bet = int(input("What would you like to bet? "))
     while (bet > player1.balance or bet < 0):
@@ -25,7 +25,7 @@ while play_again:
     player1.changeHand(player_hand[0][0])
     player1.changeHand(player_hand[1][0])
 
-
+    
     if (player1.hand == 21 and player1.hand > newDeck.dealer_hand): # player blackjack
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("\n")
@@ -51,7 +51,15 @@ while play_again:
         print("You are currently at " + str(player1.hand))
         print("\n")
 
-        while (player1.hand < 21 and input("Hit or stand? (h / s)") == "h"):
+        while (player1.hand <= 21 and input("Stand? (y / n)") == "n"):
+            if (2 * bet <= player1.balance and input("Hit or Double Down? (h / d)") == "d"): # if they can double ask for double down
+                bet *= 2
+                player_hand.append(newDeck.deal())
+                player1.changeHand(player_hand[-1][0])
+                print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
+                print("\n")
+                break
+            
             player_hand.append(newDeck.deal())
             player1.changeHand(player_hand[-1][0])
             print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))

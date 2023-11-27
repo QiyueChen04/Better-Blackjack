@@ -22,6 +22,6 @@ class Player:
         else:
             self.hand += int(cardNum)
         
-        if (self.hand > 21 and self.soft == False):
+        if (self.hand > 21 and self.soft == True):
             self.soft = False
             self.hand -= 10

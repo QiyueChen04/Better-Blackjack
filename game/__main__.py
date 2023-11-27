@@ -26,7 +26,7 @@ while play_again:
     player1.changeHand(player_hand[1][0])
 
     
-    if (player1.hand == 21 and player1.hand > newDeck.dealer_hand): # player blackjack
+    if (player1.hand == 21 and player1.hand > newDeck.dealer_hand): # player blackjack!
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("\n")
         print("Blackjack!")

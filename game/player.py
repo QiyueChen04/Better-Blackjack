@@ -17,9 +17,11 @@ class Player:
                 self.soft = True
             else:
                 self.hand += 1
-                self.soft = False
         elif (cardNum == 'Jack' or cardNum == 'Queen' or cardNum == 'King'):
             self.hand += 10
         else:
             self.hand += int(cardNum)
         
+        if (self.hand > 21 and self.soft == True):
+            self.soft = False
+            self.hand -= 10

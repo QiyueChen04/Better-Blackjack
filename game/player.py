@@ -25,3 +25,6 @@ class Player:
         if (self.hand > 21 and self.soft == True):
             self.soft = False
             self.hand -= 10
+    
+    def hit_stand(self):
+        

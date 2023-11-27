@@ -51,30 +51,30 @@ while play_again:
         print("You are currently at " + str(player1.hand))
         print("\n")
 
-        while (player1.hand <= 21 and input("Stand? (y / n)") == "n"):
-            if (2 * bet <= player1.balance and input("Hit or Double Down? (h / d)") == "d"): # if they can double ask for double down
+        if (2 * bet <= player1.balance and input("Double Down? (y / n)") == "y"): # if they can double ask for double down
                 bet *= 2
                 player_hand.append(newDeck.deal())
                 player1.changeHand(player_hand[-1][0])
                 print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
                 print("\n")
                 break
-            
-            player_hand.append(newDeck.deal())
-            player1.changeHand(player_hand[-1][0])
-            print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
-            print("\n")
-
-        if (player1.hand <= 21): # only do dealer stuff if player hasn't busted
-            print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1] + "!")
-            print("The dealer is at " + str(newDeck.dealer_hand))
-
-            # make dealer keep hitting until they reach 17
-            while (newDeck.dealer_hand < 17):
-                dealer_hand.append(newDeck.deal())
-                newDeck.changeHand(dealer_hand[-1][0])
-                print("The dealer received a " + dealer_hand[-1][0] + " of " + dealer_hand[-1][1] + ". The dealer is currently at " + str(newDeck.dealer_hand))
+        else: #if they cannot double or say no, proceed to hit/stand phase
+            while (player1.hand <= 21 and input("hit or stand? (h / s)") == "h"):
+                player_hand.append(newDeck.deal())
+                player1.changeHand(player_hand[-1][0])
+                print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
                 print("\n")
+
+            if (player1.hand <= 21): # only do dealer stuff if player hasn't busted
+                print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1] + "!")
+                print("The dealer is at " + str(newDeck.dealer_hand))
+
+                # make dealer keep hitting until they reach 17
+                while (newDeck.dealer_hand < 17):
+                    dealer_hand.append(newDeck.deal())
+                    newDeck.changeHand(dealer_hand[-1][0])
+                    print("The dealer received a " + dealer_hand[-1][0] + " of " + dealer_hand[-1][1] + ". The dealer is currently at " + str(newDeck.dealer_hand))
+                    print("\n")
 
 
         # TODO make a bunch of functions

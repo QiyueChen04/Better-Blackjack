@@ -7,8 +7,10 @@ from player import Player
 from deck import Deck
 from button import Button
 from roller import Roller
+from cardDetector import CardDetector
 
 lcd = LCD()
+cd = CardDetector()
 
 newDeck = Deck()
 newDeck.shuffle()
@@ -40,6 +42,8 @@ def displayCards(): # Display cards on LCD screen
     
     lcd.text(temp1, 1)
     lcd.text(temp2, 2)
+    sleep(3)
+    lcd.clear()
 
 lcd.text("   Welcome to   ", 1)
 lcd.text("BetterBlackjack!", 2)
@@ -74,6 +78,8 @@ while play_again:
     lcd.text("   Good Luck!   ", 2)
     # currentCard = camera.detect()
     sleep(2)
+    playerHand = []
+    dealerHand = []
 
     lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
@@ -128,13 +134,9 @@ while play_again:
 
         player.loseBalance(bet)
     else: # "regular" game
-        print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
-        print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and an unknown card in his hand!")
-        print("You are currently at " + str(player1.hand))
-        print("\n")
-
-        if (2 * bet <= player1.balance and input("Double Down? (y / n)") == "y"): # if they can double ask for double down
-                bet *= 2
+        displayCards()
+        if (2 * bet <= player.balance): # if they can double ask for double down
+                lcd("Double Down?", 1, "center")
                 player_hand.append(newDeck.deal())
                 player1.changeHand(player_hand[-1][0])
                 print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
@@ -191,7 +193,7 @@ while play_again:
     
     if (play_again):
         newDeck.resetDeck()
-        player1.hand = 0
+        player.hand = 0
     
     print("\n")
     

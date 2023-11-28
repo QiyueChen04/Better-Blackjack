@@ -1,9 +1,13 @@
 import math
 import random
+from time import sleep
 
+from rip_lcd import LCD
 from player import Player
 from deck import Deck
 from button import Button
+
+lcd = LCD()
 
 newDeck = Deck()
 newDeck.shuffle()
@@ -12,14 +16,51 @@ player1 = Player(1000, 0)
 red = Button(22)
 blue = Button(27)
 
+def centreNum(n, line):
+    digits = math.floor(math.log(n, 10)) + 1
+    for x in range(math.floor((16 - digits) / 2)):
+        lcd.text(" ", line)
+    num = str(n)
+    lcd.text(num, line)
+
+
+lcd.text("   Welcome to   ", 1)
+lcd.text("BetterBlackjack!")
+sleep(3)
+lcd.clear()
+
 
 play_again = 1
 
 while play_again:
 
-    bet = int(input("What would you like to bet? "))
-    while (bet > player1.balance or bet < 0):
-        bet = int(input("Bet is not accepted. Please try again: "))
+    lcd.text("Current Balance:", 1)
+    centreNum(player1.balance, 2)
+    sleep(3)
+    lcd.clear()
+
+    lcd.text(" How much would ", 1)
+    lcd.text("you like to bet?", 2)
+    sleep(2)
+    lcd.clear()
+
+    bet = 100
+    lcd.text("B: Done  R: +100", 1)
+    centreNum(100, 2)
+    while (1):
+        if (Button.waitForBtn == 22):
+            bet += 100
+            if (bet >= player1.balance):
+                bet = player1.balance
+                break
+            centreNum(bet, 2)
+        else:
+            break
+    lcd.clear()
+    
+    lcd.text("  Bet Recieved  ", 1)
+    lcd.text("   Good Luck!   ", 2)
+    sleep(2)
 
     dealer_hand = [newDeck.deal(), newDeck.deal()]
     player_hand = [newDeck.deal(), newDeck.deal()]

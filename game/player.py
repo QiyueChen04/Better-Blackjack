@@ -11,13 +11,13 @@ class Player:
         self.balance -= amount
 
     def changeHand(self, cardNum):
-        if (cardNum == 'Ace'):
+        if (cardNum == 'A'):
             if (self.hand <= 10):
                 self.hand += 11
                 self.soft = True
             else:
                 self.hand += 1
-        elif (cardNum == 'Jack' or cardNum == 'Queen' or cardNum == 'King'):
+        elif (cardNum == 'J' or cardNum == 'Q' or cardNum == 'K'):
             self.hand += 10
         else:
             self.hand += int(cardNum)

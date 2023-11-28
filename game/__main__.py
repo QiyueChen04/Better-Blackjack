@@ -2,95 +2,131 @@ import math
 import random
 from time import sleep
 
-from rip_lcd import LCD
+from rpi_lcd import LCD
 from player import Player
 from deck import Deck
 from button import Button
+from roller import Roller
 
 lcd = LCD()
 
 newDeck = Deck()
 newDeck.shuffle()
-player1 = Player(1000, 0)
+player = Player(1000, 0)
+playerHand = []
+dealerHand = []
+cards_list=['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
 red = Button(22)
 blue = Button(27)
+roller = Roller()
 
-def centreNum(n, line):
-    digits = math.floor(math.log(n, 10)) + 1
-    for x in range(math.floor((16 - digits) / 2)):
-        lcd.text(" ", line)
-    num = str(n)
-    lcd.text(num, line)
+def waiting(): # Default Waiting Screen
+    lcd.clear()
+    lcd.text("Push any button", 1, "center")
+    lcd.text("to continue", 2, "center")
+    if (Button.waitForBtn):
+        lcd.clear()
+        return
 
+def displayCards(): # Display cards on LCD screen
+    temp1 = "Player:"
+    for x in playerHand:
+        temp1 = temp1 + " " + str(cards_list[x])
+    
+    temp2 = "Dealer:"
+    for x in dealerHand:
+        temp2 = temp2 + " " + str(cards_list[x])
+    
+    lcd.text(temp1, 1)
+    lcd.text(temp2, 2)
 
 lcd.text("   Welcome to   ", 1)
-lcd.text("BetterBlackjack!")
+lcd.text("BetterBlackjack!", 2)
 sleep(3)
-lcd.clear()
+waiting()
 
+lcd.text("Current Balance:", 1)
+lcd.text(str(player.balance), 2)
+sleep(3)
 
 play_again = 1
-
 while play_again:
-
-    lcd.text("Current Balance:", 1)
-    centreNum(player1.balance, 2)
-    sleep(3)
-    lcd.clear()
 
     lcd.text(" How much would ", 1)
     lcd.text("you like to bet?", 2)
     sleep(2)
-    lcd.clear()
 
     bet = 100
     lcd.text("B: Done  R: +100", 1)
-    centreNum(100, 2)
-    while (1):
+    lcd.text("100", 2, "center")
+    while (1): # continue to allow user to add 100 to bet until user clicks blue or bet exceeds balance
         if (Button.waitForBtn == 22):
             bet += 100
-            if (bet >= player1.balance):
-                bet = player1.balance
+            if (bet >= player.balance):
+                bet = player.balance
                 break
-            centreNum(bet, 2)
+            lcd.text(str(bet), 2, "center")
         else:
             break
-    lcd.clear()
-    
-    lcd.text("  Bet Recieved  ", 1)
+
+    lcd.text("  Bet Recieved  ", 1) # promp to let user know game is commencing
     lcd.text("   Good Luck!   ", 2)
+    # currentCard = camera.detect()
     sleep(2)
 
-    dealer_hand = [newDeck.deal(), newDeck.deal()]
-    player_hand = [newDeck.deal(), newDeck.deal()]
+    lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 1
+    lcd.text(" Flip this card ", 2)
+    roller.pushCard()
+    # player.changehand(cards_list[currentCard])
+    # playerHand.append(currentCard)
+    # currentCard = camera.detect()
+    sleep()
+    waiting()
 
-    newDeck.changeHand(dealer_hand[0][0])
-    newDeck.changeHand(dealer_hand[1][0])
+    lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 2
+    lcd.text(" Flip this card ", 2)
+    roller.pushCard()
+    # player.changehand(cards_list[currentCard])
+    # playerHand.append(currentCard)
+    # currentCard = camera.detect()
+    lcd.sleep(1)
+    waiting()
 
-    player1.changeHand(player_hand[0][0])
-    player1.changeHand(player_hand[1][0])
+    lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
+    lcd.text(" Flip this card ", 2)
+    roller.pushCard()
+    # newDeck.changehand(cards_list[currentCard])
+    # dealerHand.append(currentCard)
+    # currentCard = camera.detect()
+    lcd.sleep(1)
+    waiting()
 
+    lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 2
+    lcd.text("  DO NOT FLIP   ", 2)
+    roller.pushCard()
+    # newDeck.changehand(cards_list[currentCard])
+    # dealerHand.append(currentCard)
+    # currentCard = camera.detect()
+    lcd.sleep(1)
+    waiting()
     
-    if (player1.hand == 21 and player1.hand > newDeck.dealer_hand): # player blackjack!
-        print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
-        print("\n")
-        print("Blackjack!")
-        player1.addBalance(bet * 1.5)
-        print("Your balance is now at " + str(player1.balance))
-    elif (player1.hand == 21 and player1.hand == newDeck.dealer_hand): # Push with 2 blackjacks
-        print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
-        print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1])
-        print("\n")
-        print("Push!")
-        print("Your balance is still at " + str(player1.balance))
-    elif (newDeck.dealer_hand == 21 and player1.hand < newDeck.dealer_hand): # dealer blackjack
-        print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
-        print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1])
-        print("\n")
-        print("Dealer Blackjack!")
-        player1.loseBalance(bet)
-        print("Your balance is now at " + str(player1.balance))
+    if (player.hand == 21 and player.hand > newDeck.dealer_hand): # player blackjack!
+        lcd.text("We're so Barack!", 1)
+        lcd.text("Player Blackjack", 2)
+        lcd.sleep(3)
+
+        player.addBalance(bet * 1.5)
+    elif (player.hand == 21 and player.hand == newDeck.dealer_hand): # Push with 2 blackjacks
+        lcd.text("lol you thought ", 1)
+        lcd.text("      Push      ", 2)
+        lcd.sleep(3)
+    elif (newDeck.dealer_hand == 21 and player.hand < newDeck.dealer_hand): # dealer blackjack
+        lcd.text(" It's so Joever ", 1)
+        lcd.text("Dealer Blackjack", 2)
+        lcd.sleep(3)
+
+        player.loseBalance(bet)
     else: # "regular" game
         print("You received a " + player_hand[0][0] + " of " + player_hand[0][1] + " and a " + player_hand[1][0] + " of " + player_hand[1][1])
         print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and an unknown card in his hand!")
@@ -144,6 +180,10 @@ while play_again:
         elif (player1.hand == newDeck.dealer_hand): # push
             print("Push!")
             print("Your balance is still at " + str(player1.balance))
+    
+    lcd.text("Current Balance:", 1)
+    lcd.text(str(player.balance), 2, "center")
+    sleep(3)
     
     play_again = int(input("Do you want to play again? (0 / 1)"))
     while (play_again != 0 and play_again != 1):

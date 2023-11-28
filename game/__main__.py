@@ -3,10 +3,15 @@ import random
 
 from player import Player
 from deck import Deck
+from button import Button
 
 newDeck = Deck()
 newDeck.shuffle()
 player1 = Player(1000, 0)
+
+red = Button(22)
+blue = Button(27)
+
 
 play_again = 1
 
@@ -57,7 +62,6 @@ while play_again:
                 player1.changeHand(player_hand[-1][0])
                 print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
                 print("\n")
-                break
         else: #if they cannot double or say no, proceed to hit/stand phase
             while (player1.hand <= 21 and input("hit or stand? (h / s)") == "h"):
                 player_hand.append(newDeck.deal())

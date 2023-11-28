@@ -5,14 +5,13 @@ from subprocess import call
 
 
 class Roller:
-    
     call(['sudo', 'pigpiod'])
     
     def stop(self):
         self.innerServo.detach()
         self.outerServo.detach()
     
-    def __init__(self, inner_pin, outer_pin):
+    def __init__(self, inner_pin=12, outer_pin=13):
         factory = PiGPIOFactory()
         self.innerServo = AngularServo(inner_pin, min_angle=-100, max_angle=100, pin_factory=factory)
         self.outerServo = AngularServo(outer_pin, min_angle=-100, max_angle=100, pin_factory=factory)

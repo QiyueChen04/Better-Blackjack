@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, balance, hand=0, soft = False):
+    def __init__(self, balance, hand=0, soft=False):
         self.balance = balance
         self.hand = hand
         self.soft = soft
@@ -21,10 +21,6 @@ class Player:
             self.hand += 10
         else:
             self.hand += int(cardNum)
-        
         if (self.hand > 21 and self.soft == True):
-            self.soft = False
             self.hand -= 10
-    
-    def hit_stand(self):
-        
+            self.soft = False

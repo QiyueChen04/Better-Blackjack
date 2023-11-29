@@ -24,3 +24,6 @@ class Player:
         if (self.hand > 21 and self.soft == True):
             self.hand -= 10
             self.soft = False
+    
+    def reset(self):
+        self.hand = 0

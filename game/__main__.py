@@ -147,14 +147,23 @@ while play_again:
                     waiting()
         
         if (hitStand): #if they cannot double or say no, proceed to hit/stand phase
-            while (player.hand <= 21 and input("hit or stand? (h / s)") == "h"):
-                player_hand.append(newDeck.deal())
-                player1.changeHand(player_hand[-1][0])
-                print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
-                print("\n")
+            while (player.hand <= 21):
+                lcd.text("Hit or Stand?", 1, "center")
+                lcd.text("B-Stand    R-Hit", 2)
+                if (Button.waitForBtn == 22):
+                    lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 3
+                    lcd.text(" Flip this card ", 2)
+                    roller.pushCard()
+                    # player.changehand(cards_list[currentCard])
+                    # playerHand.append(currentCard)
+                    # currentCard = camera.detect()
+                    sleep(1)
+                    waiting()
+                else:
+                    break
 
-            if (player1.hand <= 21): # only do dealer stuff if player hasn't busted
-                print("The dealer has a " + dealer_hand[0][0] + " of " + dealer_hand[0][1] + " and a " + dealer_hand[1][0] + " of " + dealer_hand[1][1] + "!")
+            if (player.hand <= 21): # only do dealer stuff if player hasn't busted
+                displayHand("Dealer", dealerHand, 1)
                 print("The dealer is at " + str(newDeck.dealer_hand))
 
                 # make dealer keep hitting until they reach 17

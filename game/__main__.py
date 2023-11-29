@@ -79,7 +79,7 @@ while play_again:
     # player.changehand(cards_list[currentCard])
     # playerHand.append(currentCard)
     # currentCard = camera.detect()
-    sleep()
+    sleep(1)
     waiting()
 
     lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 2
@@ -127,16 +127,27 @@ while play_again:
         player.loseBalance(bet)
     else: # "regular" game
         displayHand("Player", playerHand, 1)
+        dealerStarter = "Dealer: " + str(cards_list[dealerHand[0]]) + " ?"
+        lcd.text(dealerStarter, 2)
+        sleep(3)
 
-
+        hitStand = True
         if (2 * bet <= player.balance): # if they can double ask for double down
                 lcd("Double Down?", 1, "center")
-                player_hand.append(newDeck.deal())
-                player1.changeHand(player_hand[-1][0])
-                print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))
-                print("\n")
-        else: #if they cannot double or say no, proceed to hit/stand phase
-            while (player1.hand <= 21 and input("hit or stand? (h / s)") == "h"):
+                lcd("B-No       R-Yes", 2)
+                if (Button.waitForBtn == 22):
+                    hitStand = False
+                    lcd.text("  PLAYER CARD   ", 1) # Dealing Player Card 3
+                    lcd.text(" Flip this card ", 2)
+                    roller.pushCard()
+                    # player.changehand(cards_list[currentCard])
+                    # playerHand.append(currentCard)
+                    # currentCard = camera.detect()
+                    sleep(1)
+                    waiting()
+        
+        if (hitStand): #if they cannot double or say no, proceed to hit/stand phase
+            while (player.hand <= 21 and input("hit or stand? (h / s)") == "h"):
                 player_hand.append(newDeck.deal())
                 player1.changeHand(player_hand[-1][0])
                 print("You received a " + player_hand[-1][0] + " of " + player_hand[-1][1] + ". You are currently at " + str(player1.hand))

@@ -19,9 +19,9 @@ from collections import deque
 
 
 # Module global variables
-CROP = (140, 30, 350, 250) # Preliminary Crop to get approximate location of rank
+CROP = (120, 30, 350, 250) # Preliminary Crop to get approximate location of rank
 TEMPLATE_SIZE = (150, 240) # Dimension of template arrays/images
-vis = np.zeros([220, 210]) # (CROP[3] - CROP[1], CROP[2] - CROP[0])
+vis = np.zeros([CROP[3] - CROP[1], CROP[2] - CROP[0]]) # (CROP[3] - CROP[1], CROP[2] - CROP[0])
 
 class CardDetector:
 
@@ -34,6 +34,8 @@ class CardDetector:
     TEMPLATES = [] # Array of Numpy Arrays
     BLANK = None # Grayscale image of empty card
 
+    THRESHOLD = 60
+
     # Read templates
     def __init__(self):
         if (len(CardDetector.TEMPLATES) == 0):
@@ -43,8 +45,10 @@ class CardDetector:
                 CardDetector.TEMPLATES.append(img_np)
 
         if (CardDetector.BLANK == None):
-            CardDetector.BLANK = Image.open(CardDetector.BLANK_PATH)
-            CardDetector.BLANK = ImageOps.grayscale(CardDetector.BLANK)
+            blank = Image.open(CardDetector.BLANK_PATH)
+            contrast = ImageEnhance.Contrast(blank)
+            blank = contrast.enhance(4)
+            CardDetector.BLANK = ImageOps.grayscale(blank)
 
     def getBestXORMatch(self, img_np):
         cmp = 1e9
@@ -60,13 +64,14 @@ class CardDetector:
 
     # Accepts a pillow image of the card, returns it's rank
     def determineRank(self, img):
+        contrast = ImageEnhance.Contrast(img)
+        img = contrast.enhance(4)
         gray = ImageOps.grayscale(img);
         sub = ImageChops.subtract(CardDetector.BLANK, gray, 1, 0)
         crop = sub.crop(CROP)
 
-        threshold = 6;
         thresh_np = np.array(crop)
-        thresh_np = np.where(thresh_np > threshold, 255, 0)
+        thresh_np = np.where(thresh_np > CardDetector.THRESHOLD, 255, 0)
 
         crop.putdata(thresh_np.flatten())
 

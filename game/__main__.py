@@ -31,19 +31,11 @@ def waiting(): # Default Waiting Screen
         lcd.clear()
         return
 
-def displayCards(): # Display cards on LCD screen
-    temp1 = "Player:"
-    for x in playerHand:
-        temp1 = temp1 + " " + str(cards_list[x])
-    
-    temp2 = "Dealer:"
-    for x in dealerHand:
-        temp2 = temp2 + " " + str(cards_list[x])
-    
-    lcd.text(temp1, 1)
-    lcd.text(temp2, 2)
-    sleep(3)
-    lcd.clear()
+def displayHand(name, hand, line): # Display cards on LCD screen
+    temp = name + ":"
+    for x in hand:
+        temp = temp + " " + str(cards_list[x])
+    lcd.text(temp, line)
 
 lcd.text("   Welcome to   ", 1)
 lcd.text("BetterBlackjack!", 2)
@@ -134,7 +126,9 @@ while play_again:
 
         player.loseBalance(bet)
     else: # "regular" game
-        displayCards()
+        displayHand("Player", playerHand, 1)
+
+
         if (2 * bet <= player.balance): # if they can double ask for double down
                 lcd("Double Down?", 1, "center")
                 player_hand.append(newDeck.deal())

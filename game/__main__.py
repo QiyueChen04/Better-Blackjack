@@ -185,7 +185,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 dealer.changeHand(cards_list[currentCard])
                 dealerHand.append(currentCard)
                 currentCard = getCard()
-                lcd.sleep(1)
+                sleep(1)
                 waiting()
 
 

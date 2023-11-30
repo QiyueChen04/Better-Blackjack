@@ -5,5 +5,6 @@ def takePhoto():
     camera = PiCamera()
     camera.start_preview()
     sleep(0.5)
-    camera.capture(f'../pics/blank.jpg')
+    camera.capture(f'../pics/scan.jpg')
     camera.stop_preview()
+

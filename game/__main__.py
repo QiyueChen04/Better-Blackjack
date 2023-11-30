@@ -29,7 +29,7 @@ def waiting(): # Default Waiting Screen
     lcd.clear()
     lcd.text("Push any button", 1, "center")
     lcd.text("to continue", 2, "center")
-    if (Button.waitForBtn):
+    if (Button.waitForBtn()):
         lcd.clear()
         return
 
@@ -46,7 +46,7 @@ def fullDisplay(): # Function for displaying the entirety of the player and deal
 
 def getCard():
     print("Taking Image!\n")
-    call(['raspistill', '-o', '../pics/scan.jpg', '-w', '1600', '-h', '1200'])
+    call(['raspistill', '-o', '../pics/scan.jpg', '-w', '400', '-h', '300'])
     img = Image.open(r'../pics/scan.jpg')
     currentCard = cd.determineRank(img)
 
@@ -69,7 +69,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("B: Done  R: +100", 1)
     lcd.text("100", 2, "center")
     while (1): # continue to allow user to add 100 to bet until user clicks blue or bet exceeds balance
-        if (Button.waitForBtn == 22):
+        if (Button.waitForBtn() == 22):
             bet += 100
             if (bet >= player.balance):
                 bet = player.balance
@@ -139,7 +139,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
 
                 lcd.text("Double Down?", 1, "center")
                 lcd.text("B-No       R-Yes", 2)
-                if (Button.waitForBtn == 22):
+                if (Button.waitForBtn() == 22):
                     hitStand = False
                     bet *= 2
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
@@ -158,7 +158,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 
                 lcd.text("Hit or Stand?", 1, "center")
                 lcd.text("B-Stand    R-Hit", 2)
-                if (Button.waitForBtn == 22):
+                if (Button.waitForBtn() == 22):
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
                     roller.pushCard()
@@ -217,7 +217,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("B-No       R-Yes", 2)
     
     
-    if (Button.waitForBtn == 22):
+    if (Button.waitForBtn() == 22):
         dealer.reset()
         player.reset()
         playerHand = []

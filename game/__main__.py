@@ -48,7 +48,6 @@ def getCard():
     lcd.text("Please Wait", 2, "center")
     call(['raspistill', '-o', '../pics/scan.jpg', '-w', '400', '-h', '300'])
     img = Image.open(r'../pics/scan.jpg')
-    roller.pushCard()
     return cd.determineRank(img)
 
 lcd.text("   Welcome to   ", 1)
@@ -82,31 +81,35 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("  Bet Recieved  ", 1) # promp to let user know game is commencing
     lcd.text("   Good Luck!   ", 2)
 
+    currentCard = getCard()
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
-    currentCard = getCard()
+    roller.pushCard()
     player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
     currentCard = getCard()
     waiting()
 
+    currentCard = getCard()
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 2
     lcd.text(" Flip this card ", 2)
-    currentCard = getCard()
+    roller.pushCard()
     player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
     waiting()
 
+    currentCard = getCard()
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
     lcd.text(" Flip this card ", 2)
-    currentCard = getCard()
+    roller.pushCard()
     dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
     waiting()
 
+    currentCard = getCard()
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 2
     lcd.text("  DO NOT FLIP   ", 2)
-    currentCard = getCard()
+    roller.pushCard()
     dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
     waiting()
@@ -139,9 +142,10 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 if (Button.waitForBtn() == 22):
                     hitStand = False
                     bet *= 2
+                    currentCard = getCard()
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
-                    currentCard = getCard()
+                    roller.pushCard()
                     player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
                     waiting()
@@ -155,9 +159,10 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 lcd.text("Hit or Stand?", 1, "center")
                 lcd.text("B-Stand    R-Hit", 2)
                 if (Button.waitForBtn() == 22):
+                    currentCard = getCard()
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
-                    currentCard = getCard()
+                    roller.pushCard()
                     player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
                     waiting()
@@ -174,9 +179,10 @@ while (1): # keep looping until the user says no to playing again which breaks t
             while (dealer.hand < 17):
                 fullDisplay()
 
+                currentCard = getCard()
                 lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
                 lcd.text(" Flip this card ", 2)
-                currentCard = getCard()
+                roller.pushCard()
                 dealer.changeHand(cards_list[currentCard])
                 dealerHand.append(currentCard)
                 sleep(1)

@@ -4,16 +4,16 @@ from time import sleep
 
 from rpi_lcd import LCD
 from player import Player
-from deck import Deck
 from button import Button
 from roller import Roller
 from cardDetector import CardDetector
+from subprocess import call
+from PIL import Image
 
 lcd = LCD()
 cd = CardDetector()
 
-newDeck = Deck()
-newDeck.shuffle()
+dealer = Player(0, 0)
 player = Player(1000, 0)
 playerHand = []
 dealerHand = []
@@ -22,6 +22,8 @@ cards_list=['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 red = Button(22)
 blue = Button(27)
 roller = Roller()
+
+currentCard = 0
 
 def waiting(): # Default Waiting Screen
     lcd.clear()
@@ -41,6 +43,11 @@ def fullDisplay(): # Function for displaying the entirety of the player and deal
     displayHand("You", playerHand, 1)  
     displayHand("Dealer", dealerHand, 2)
     sleep(3)
+
+def getCard():
+    call(['raspistill', '-o', '../pics/scan.jpg', '-w', '1600', '-h', '1200'])
+    img = Image.open(r'../pics/scan.jpg')
+    currentCard = cd.determineRank(img)
 
 lcd.text("   Welcome to   ", 1)
 lcd.text("BetterBlackjack!", 2)
@@ -72,55 +79,50 @@ while (1): # keep looping until the user says no to playing again which breaks t
 
     lcd.text("  Bet Recieved  ", 1) # promp to let user know game is commencing
     lcd.text("   Good Luck!   ", 2)
-    # currentCard = camera.detect()
-    sleep(2)
+    getCard()
 
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    # player.changehand(cards_list[currentCard])
-    # playerHand.append(currentCard)
-    # currentCard = camera.detect()
-    sleep(1)
+    player.changehand(cards_list[currentCard])
+    playerHand.append(currentCard)
+    getCard()
     waiting()
 
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 2
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    # player.changehand(cards_list[currentCard])
-    # playerHand.append(currentCard)
-    # currentCard = camera.detect()
-    lcd.sleep(1)
+    player.changehand(cards_list[currentCard])
+    playerHand.append(currentCard)
+    getCard()
     waiting()
 
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    # newDeck.changehand(cards_list[currentCard])
-    # dealerHand.append(currentCard)
-    # currentCard = camera.detect()
-    lcd.sleep(1)
+    dealer.changehand(cards_list[currentCard])
+    dealerHand.append(currentCard)
+    getCard()
     waiting()
 
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 2
     lcd.text("  DO NOT FLIP   ", 2)
     roller.pushCard()
-    # newDeck.changehand(cards_list[currentCard])
-    # dealerHand.append(currentCard)
-    # currentCard = camera.detect()
-    lcd.sleep(1)
+    dealer.changehand(cards_list[currentCard])
+    dealerHand.append(currentCard)
+    getCard()
     waiting()
     
-    if (player.hand == 21 and player.hand > newDeck.dealer_hand): # player blackjack!
+    if (player.hand == 21 and player.hand > dealer.hand): # player blackjack!
         fullDisplay()
         lcd.text("We're so Barack!", 1)
         lcd.text("Blackjack", 2)
         player.addBalance(bet * 1.5)
-    elif (player.hand == 21 and player.hand == newDeck.dealer_hand): # Push with 2 blackjacks
+    elif (player.hand == 21 and player.hand == dealer.hand): # Push with 2 blackjacks
         fullDisplay()
         lcd.text("lol you thought ", 1)
         lcd.text("      Push      ", 2)
-    elif (newDeck.dealer_hand == 21 and player.hand < newDeck.dealer_hand): # dealer blackjack
+    elif (dealer.hand == 21 and player.hand < dealer.hand): # dealer blackjack
         fullDisplay()
         lcd.text(" It's so Joever ", 1)
         lcd.text("Dealer Blackjack", 2)
@@ -142,10 +144,9 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
                     roller.pushCard()
-                    # player.changehand(cards_list[currentCard])
-                    # playerHand.append(currentCard)
-                    # currentCard = camera.detect()
-                    sleep(1)
+                    player.changehand(cards_list[currentCard])
+                    playerHand.append(currentCard)
+                    getCard()
                     waiting()
         
         if (hitStand): #if they cannot double or say no, proceed to hit/stand phase
@@ -160,10 +161,9 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
                     roller.pushCard()
-                    # player.changehand(cards_list[currentCard])
-                    # playerHand.append(currentCard)
-                    # currentCard = camera.detect()
-                    sleep(1)
+                    player.changehand(cards_list[currentCard])
+                    playerHand.append(currentCard)
+                    getCard()
                     waiting()
                 else: # if they ever hit the blue button break out of while look
                     lcd.clear()
@@ -175,15 +175,15 @@ while (1): # keep looping until the user says no to playing again which breaks t
             sleep(3)
 
             # make dealer keep hitting until they reach 17
-            while (newDeck.dealer_hand < 17):
+            while (dealer.hand < 17):
                 fullDisplay()
 
                 lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
                 lcd.text(" Flip this card ", 2)
                 roller.pushCard()
-                # newDeck.changehand(cards_list[currentCard])
-                # dealerHand.append(currentCard)
-                # currentCard = camera.detect()
+                dealer.changehand(cards_list[currentCard])
+                dealerHand.append(currentCard)
+                getCard()
                 lcd.sleep(1)
                 waiting()
 
@@ -194,16 +194,16 @@ while (1): # keep looping until the user says no to playing again which breaks t
         if (player.hand > 21): # you busted
             lcd.text("You Bust!", 1, "center")
             player.loseBalance(bet)
-        elif (newDeck.dealer_hand > 21): # the dealer busted
+        elif (dealer.hand > 21): # the dealer busted
             lcd.text("Dealer Bust!", 1, "center")
             player.addBalance(bet)
-        elif (player.hand < newDeck.dealer_hand): # the dealer had the better hand
+        elif (player.hand < dealer.hand): # the dealer had the better hand
             lcd.text("Dealer Wins!", 1, "center")
             player.loseBalance(bet)
-        elif (player.hand > newDeck.dealer_hand): # you had the better hand
+        elif (player.hand > dealer.hand): # you had the better hand
             print("You Win!", 1, "center")
             player.addBalance(bet)
-        elif (player.hand == newDeck.dealer_hand): # push
+        elif (player.hand == dealer.hand): # push
             print("Push!")
     sleep(3)
     waiting()
@@ -217,7 +217,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     
     
     if (Button.waitForBtn == 22):
-        newDeck.resetDeck()
+        dealer.reset()
         player.reset()
         playerHand = []
         dealerHand = [] # remember to reset the playerHand and dealerHand arrays as well as the objects

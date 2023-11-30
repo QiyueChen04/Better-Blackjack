@@ -189,7 +189,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
 
 
         fullDisplay() # right before winning/losing messages display entirety of both hands regardless of hit/stand/double down decisions
-
+        lcd.clear()
         # check if player won
         if (player.hand > 21): # you busted
             lcd.text("You Bust!", 1, "center")

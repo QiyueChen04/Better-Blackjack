@@ -224,11 +224,6 @@ while (1): # keep looping until the user says no to playing again which breaks t
         player.reset()
         playerHand = []
         dealerHand = [] # remember to reset the playerHand and dealerHand arrays as well as the objects
-        lcd.text("Please Reshuffle", 1, "center")
-        lcd.text("The Deck", 2, "center")
-        sleep(10)
-
-        waiting()
     else:
         break
 

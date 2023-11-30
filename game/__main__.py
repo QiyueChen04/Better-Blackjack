@@ -87,7 +87,6 @@ while (1): # keep looping until the user says no to playing again which breaks t
     roller.pushCard()
     player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
-    currentCard = getCard()
     waiting()
 
     currentCard = getCard()

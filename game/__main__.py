@@ -56,7 +56,7 @@ sleep(3)
 waiting()
 
 lcd.text("Current Balance:", 1)
-lcd.text(str(player.balance), 2)
+lcd.text(str(player.balance), 2, "center")
 sleep(3)
 
 while (1): # keep looping until the user says no to playing again which breaks this while loop

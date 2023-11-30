@@ -81,7 +81,10 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("  Bet Recieved  ", 1) # promp to let user know game is commencing
     lcd.text("   Good Luck!   ", 2)
 
-    currentCard = getCard()
+
+    call(['raspistill', '-o', '../pics/scan.jpg', '-w', '400', '-h', '300'])
+    img = Image.open(r'../pics/scan.jpg')
+    currentCard = cd.determineRank(img)
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()

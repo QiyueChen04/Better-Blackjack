@@ -23,8 +23,6 @@ red = Button(22)
 blue = Button(27)
 roller = Roller()
 
-currentCard = 0
-
 def waiting(): # Default Waiting Screen
     lcd.clear()
     lcd.text("Push any button", 1, "center")
@@ -48,7 +46,7 @@ def getCard():
     print("Taking Image!\n")
     call(['raspistill', '-o', '../pics/scan.jpg', '-w', '400', '-h', '300'])
     img = Image.open(r'../pics/scan.jpg')
-    currentCard = cd.determineRank(img)
+    return cd.determineRank(img)
 
 lcd.text("   Welcome to   ", 1)
 lcd.text("BetterBlackjack!", 2)
@@ -80,14 +78,14 @@ while (1): # keep looping until the user says no to playing again which breaks t
 
     lcd.text("  Bet Recieved  ", 1) # promp to let user know game is commencing
     lcd.text("   Good Luck!   ", 2)
-    getCard()
+    currentCard = getCard()
 
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
     player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
-    getCard()
+    currentCard = getCard()
     waiting()
 
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 2
@@ -95,7 +93,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     roller.pushCard()
     player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
-    getCard()
+    currentCard = getCard()
     waiting()
 
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
@@ -103,7 +101,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     roller.pushCard()
     dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
-    getCard()
+    currentCard = getCard()
     waiting()
 
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 2
@@ -111,7 +109,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     roller.pushCard()
     dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
-    getCard()
+    currentCard = getCard()
     waiting()
     
     if (player.hand == 21 and player.hand > dealer.hand): # player blackjack!
@@ -147,7 +145,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     roller.pushCard()
                     player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
-                    getCard()
+                    currentCard = getCard()
                     waiting()
         
         if (hitStand): #if they cannot double or say no, proceed to hit/stand phase
@@ -164,7 +162,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     roller.pushCard()
                     player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
-                    getCard()
+                    currentCard = getCard()
                     waiting()
                 else: # if they ever hit the blue button break out of while look
                     lcd.clear()
@@ -184,7 +182,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 roller.pushCard()
                 dealer.changeHand(cards_list[currentCard])
                 dealerHand.append(currentCard)
-                getCard()
+                currentCard = getCard()
                 lcd.sleep(1)
                 waiting()
 

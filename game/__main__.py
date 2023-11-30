@@ -45,6 +45,7 @@ def fullDisplay(): # Function for displaying the entirety of the player and deal
     sleep(3)
 
 def getCard():
+    print("Taking Image!\n")
     call(['raspistill', '-o', '../pics/scan.jpg', '-w', '1600', '-h', '1200'])
     img = Image.open(r'../pics/scan.jpg')
     currentCard = cd.determineRank(img)
@@ -84,7 +85,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    player.changehand(cards_list[currentCard])
+    player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
     getCard()
     waiting()
@@ -92,7 +93,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 2
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    player.changehand(cards_list[currentCard])
+    player.changeHand(cards_list[currentCard])
     playerHand.append(currentCard)
     getCard()
     waiting()
@@ -100,7 +101,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
     lcd.text(" Flip this card ", 2)
     roller.pushCard()
-    dealer.changehand(cards_list[currentCard])
+    dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
     getCard()
     waiting()
@@ -108,7 +109,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
     lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 2
     lcd.text("  DO NOT FLIP   ", 2)
     roller.pushCard()
-    dealer.changehand(cards_list[currentCard])
+    dealer.changeHand(cards_list[currentCard])
     dealerHand.append(currentCard)
     getCard()
     waiting()
@@ -144,7 +145,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
                     roller.pushCard()
-                    player.changehand(cards_list[currentCard])
+                    player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
                     getCard()
                     waiting()
@@ -161,7 +162,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                     lcd.text("   YOUR CARD    ", 1) # Dealing Player Card 3
                     lcd.text(" Flip this card ", 2)
                     roller.pushCard()
-                    player.changehand(cards_list[currentCard])
+                    player.changeHand(cards_list[currentCard])
                     playerHand.append(currentCard)
                     getCard()
                     waiting()
@@ -181,7 +182,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
                 lcd.text("  DEALER CARD   ", 1) # Dealing Dealer Card 1
                 lcd.text(" Flip this card ", 2)
                 roller.pushCard()
-                dealer.changehand(cards_list[currentCard])
+                dealer.changeHand(cards_list[currentCard])
                 dealerHand.append(currentCard)
                 getCard()
                 lcd.sleep(1)

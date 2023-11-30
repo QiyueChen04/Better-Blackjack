@@ -206,10 +206,11 @@ while (1): # keep looping until the user says no to playing again which breaks t
         elif (player.hand == newDeck.dealer_hand): # push
             print("Push!")
     sleep(3)
+    waiting()
 
     lcd.text("Current Balance:", 1)
     lcd.text(str(player.balance), 2, "center")
-    sleep(3)
+    sleep(5)
     
     lcd.text("Play Again?", 1, "center")
     lcd.text("B-No       R-Yes", 2)
@@ -220,6 +221,11 @@ while (1): # keep looping until the user says no to playing again which breaks t
         player.reset()
         playerHand = []
         dealerHand = [] # remember to reset the playerHand and dealerHand arrays as well as the objects
+        lcd.text("Please Reshuffle", 1, "center")
+        lcd.text("The Deck", 2, "center")
+        sleep(10)
+
+        waiting()
     else:
         break
 

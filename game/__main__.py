@@ -44,6 +44,8 @@ def fullDisplay(): # Function for displaying the entirety of the player and deal
 
 def getCard():
     print("Taking Image!\n")
+    lcd.text("Scanning...", 1, "center")
+    lcd.text("Please Wait", 2, "center")
     call(['raspistill', '-o', '../pics/scan.jpg', '-w', '400', '-h', '300'])
     img = Image.open(r'../pics/scan.jpg')
     return cd.determineRank(img)

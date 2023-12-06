@@ -61,6 +61,15 @@ sleep(3)
 
 while (1): # keep looping until the user says no to playing again which breaks this while loop
 
+    if (player.balance == 0):   
+        lcd.text("You're broke!", 1, "center")
+        lcd.text("You really suck!", 2, "center")
+        lcd.sleep(4)
+
+        lcd.text("Nico Spronk has", 1, "center")
+        lcd.text("gifted $1000", 2, "center")
+        lcd.sleep(5)
+
     lcd.text(" How much would ", 1)
     lcd.text("you like to bet?", 2)
     sleep(2)
@@ -118,8 +127,8 @@ while (1): # keep looping until the user says no to playing again which breaks t
     
     if (player.hand == 21 and player.hand > dealer.hand): # player blackjack!
         fullDisplay()
-        lcd.text("We're so Barack!", 1)
-        lcd.text("Blackjack", 2)
+        lcd.text("It's Wardin Time", 1, "center")
+        lcd.text("Blackjack", 2, "center")
         player.addBalance(bet * 1.5)
     elif (player.hand == 21 and player.hand == dealer.hand): # Push with 2 blackjacks
         fullDisplay()
@@ -127,7 +136,7 @@ while (1): # keep looping until the user says no to playing again which breaks t
         lcd.text("      Push      ", 2)
     elif (dealer.hand == 21 and player.hand < dealer.hand): # dealer blackjack
         fullDisplay()
-        lcd.text(" It's so Joever ", 1)
+        lcd.text("It's So Zhouver", 1, "center")
         lcd.text("Dealer Blackjack", 2)
         player.loseBalance(bet)
     else: # "regular" game

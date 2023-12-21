@@ -1,0 +1,6 @@
+numpy==1.26.2
+Pillow==10.1.0
+rpi-lcd==0.0.3
+RPi.GPIO==0.7.1
+gpiozero==2.0
+picamera==1.13

@@ -1,4 +1,6 @@
 #########################################
+# Card detection with contour finding and bitwise-xor
+# 
 # USAGE
 # 
 # from PIL import Image
@@ -16,8 +18,6 @@ import numpy as np
 from collections import deque
 
 
-
-
 # Module global variables
 CROP = (120, 30, 350, 250) # Preliminary Crop to get approximate location of rank
 TEMPLATE_SIZE = (150, 240) # Dimension of template arrays/images
@@ -28,8 +28,8 @@ class CardDetector:
     NUM_CARDS = 13
 
     # These need to be adjusted based on where the images are
-    TEMPLATE_PATHS = [f'contours/{i}.png' for i in range(NUM_CARDS)]
-    BLANK_PATH = 'newPhoto/blank.jpg'
+    TEMPLATE_PATHS = [f'../templates/{i}.png' for i in range(NUM_CARDS)]
+    BLANK_PATH = '../pics/blank.jpg'
 
     TEMPLATES = [] # Array of Numpy Arrays
     BLANK = None # Grayscale image of empty card

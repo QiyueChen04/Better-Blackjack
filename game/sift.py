@@ -1,3 +1,5 @@
+# SIFT algorithm for image detection, ultimately unused
+
 import cv2
 import numpy
 

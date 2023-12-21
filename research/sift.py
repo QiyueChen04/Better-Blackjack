@@ -1,4 +1,4 @@
-# SIFT algorithm for image detection, ultimately unused
+# SIFT feature detection algorithm for image detection
 
 import cv2
 import numpy

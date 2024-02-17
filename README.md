@@ -59,4 +59,4 @@
 - Captures photos from the camera using the camera module from “picamera” library.
 - Determines if the player wins or loses, adds to/subtracts from player balance accordingly, displays appropriate winning/losing screen
 
-#### For more details, please see our [final report](/Final_Report.pdf)
+#### For more details, please see our [final report](/Final_Report.pdf).
